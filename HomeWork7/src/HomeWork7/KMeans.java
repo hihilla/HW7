@@ -100,7 +100,7 @@ public class KMeans {
 		}
 		
 		for (int i = 0; i < numOfIterations; i++){
-			if (centroid)
+//			if (centroid)
 		}
 	}
 
