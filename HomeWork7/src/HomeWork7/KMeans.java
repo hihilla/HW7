@@ -36,8 +36,9 @@ public class KMeans {
 		}
 	}
 	/**
-	 * the function returns all instances that belong to a given
-	 * centroid's index.
+	 * the function returns all array size all instances,
+	 * says to which cluster (according to centroids)
+	 * each instance belogs to
 	 * @param instances
 	 * @param indexOFCentroid
 	 * @return
@@ -83,14 +84,34 @@ public class KMeans {
 		int numOfCentroids = centroids.numInstances();
 		double[] lastDistanceCentroids = new double[numOfCentroids];
 		
+		for (int i = 0; i < numOfIterations; i++) {
+			//needed function
+		}
+	}
+	
+	public void updateIthCentroid(Instances instances, int[] indexesOfCentroids,
+									int indexOfCentoid){
 		
-		// all previous locations of the centroid...
-		for (int i = 0; i < lastDistanceCentroids.length; i++) {
-			lastDistanceCentroids[i] = Double.MAX_VALUE;
+		Instances cluster = new Instances(instances, instances.size());
+		cluster.clear();
+		Instance tempCentroid = centroids.get(indexOfCentoid);
+		
+		// adds all instances that belong to the cluster to the cluster itself
+		for (int i = 0; i < instances.numInstances(); i++) {
+			if (indexesOfCentroids[i] == indexOfCentoid){
+				cluster.add(instances.get(i));
+			}
 		}
 		
-		for (int i = 0; i < numOfIterations; i++){
-			if (centroid)
+		// finds the mean value of every attribute (RGB...)
+		// sums all values for each attribute of the instances in 
+		// the cluster, dives by the size of cluster and that is
+		// the value of the attribute of the new centroid
+		for (int i = 0; i < cluster.numAttributes(); i++) {
+			int sumOfAllValues = 0;
+			for (int j = 0; j < cluster.numInstances(); j++) {
+				tempCentroid.attribute(j).
+			}
 		}
 	}
 
