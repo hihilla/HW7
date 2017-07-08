@@ -1,4 +1,4 @@
-package HomwWork7;
+package HomeWork7;
 
 
 public class KMeans {
