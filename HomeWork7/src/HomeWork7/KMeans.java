@@ -2,6 +2,7 @@ package HomeWork7;
 
 import java.util.Random;
 
+import weka.core.EuclideanDistance;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -54,17 +55,19 @@ public class KMeans {
 	/**
 	 * a. Input: 2 Instance objects � one is an instance from the dataset and
 	 * one is a centroid (if you're using different data structure for the
-	 * centroid, feel free to change the input). b. Output: should calculate the
+	 * centroid, feel free to change the input). b. Output: should 
+	 * Calculate the
 	 * squared distance between the input instance and the input centroid
 	 * 
-	 * @param dataSetInstance
-	 * @param centroid
-	 * @return
+	 * @param dataSetInstance - an instance from the dataset 
+	 * @param centroid - a centroid 
+	 * @return distance between 2 instances
 	 */
 	public double calcSquaredDistanceFromCentroid(Instance dataSetInstance, 
-			Instance centroid) {
-
-		return 0;
+													Instance centroid) {
+		double distance = new EuclideanDistance().distance(dataSetInstance, 
+															centroid);
+		return distance;
 	}
 
 	/**
