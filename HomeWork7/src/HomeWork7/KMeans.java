@@ -35,6 +35,37 @@ public class KMeans {
 			this.centroids.add(randomInstances.instance(i));
 		}
 	}
+	/**
+	 * the function returns all instances that belong to a given
+	 * centroid's index.
+	 * @param instances
+	 * @param indexOFCentroid
+	 * @return
+	 */
+	public int[] findCluster(Instances instances){
+		
+		int numOfInstances = instances.numInstances();
+		int numOfClusters = centroids.numInstances();
+		int[] indexesOfCentroids = new int[numOfInstances];
+		double minDistance = Double.MAX_VALUE;
+		
+		// goes through all instances, checks the distances from all centroids
+		// and chooses the closest centroid of each instance.
+		for (int i = 0; i < numOfInstances; i++) {
+			for (int j = 0; j < numOfClusters; j++){
+				double tempDistance = calcSquaredDistanceFromCentroid(instances.get(i),
+						centroids.get(j));
+				if (tempDistance < minDistance){
+					minDistance = tempDistance;
+					indexesOfCentroids[i] = j;
+				}
+			}
+			// before starting a new instance, the distance is maximal
+			minDistance = Double.MAX_VALUE;
+		}
+		
+		return indexesOfCentroids;
+	}
 
 	/**
 	 * Should find and store the centroids according to the KMeans algorithm.
@@ -48,11 +79,23 @@ public class KMeans {
 	 * @param instances
 	 */
 	public void findKMeansCentroids(Instances instances) {
-
+		int numOfIterations = 40;
+		int numOfCentroids = centroids.numInstances();
+		double[] lastDistanceCentroids = new double[numOfCentroids];
+		
+		
+		// all previous locations of the centroid...
+		for (int i = 0; i < lastDistanceCentroids.length; i++) {
+			lastDistanceCentroids[i] = Double.MAX_VALUE;
+		}
+		
+		for (int i = 0; i < numOfIterations; i++){
+			if (centroid)
+		}
 	}
 
 	/**
-	 * a. Input: 2 Instance objects � one is an instance from the dataset and
+	 * Input: 2 Instance objects � one is an instance from the dataset and
 	 * one is a centroid (if you're using different data structure for the
 	 * centroid, feel free to change the input). b. Output: should calculate the
 	 * squared distance between the input instance and the input centroid
@@ -91,7 +134,11 @@ public class KMeans {
 	}
 
 	/**
-	 * 
+	 * 	Output: should be the average within set sum of squared errors. 
+	 * 	That is it should calculate the average squared distance of every 
+	 *  instance from the centroid to which it is assigned. This is Tr(Sc) from class,
+	 *  divided by the number of instances. 
+	 *  Return the double value of the WSSSE. 
 	 * @param instances
 	 * @return
 	 */
