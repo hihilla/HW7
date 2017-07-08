@@ -53,11 +53,8 @@ public class KMeans {
 	}
 
 	/**
-	 * a. Input: 2 Instance objects � one is an instance from the dataset and
-	 * one is a centroid (if you're using different data structure for the
-	 * centroid, feel free to change the input). b. Output: should 
-	 * Calculate the
-	 * squared distance between the input instance and the input centroid
+	 * Calculate the squared distance between the input instance and the input
+	 * centroid
 	 * 
 	 * @param dataSetInstance - an instance from the dataset 
 	 * @param centroid - a centroid 
@@ -71,11 +68,10 @@ public class KMeans {
 	}
 
 	/**
-	 * Input: Instance Output: the index of the closest centroid to the input
-	 * instance
+	 * Finds the index of the closest centroid to the input instance
 	 * 
 	 * @param instance
-	 * @return
+	 * @return index of closest centroid
 	 */
 	public int findClosestCentroid(Instance instance) {
 		int closestCentroidIndex = 0;
@@ -91,15 +87,19 @@ public class KMeans {
 	}
 
 	/**
-	 * Output: should replace every instance in Instances by the centroid to
-	 * which it is assigned (closest centroid) and return the new Instances
-	 * object.
+	 * Replace every instance in Instances by the closest centroid
 	 * 
 	 * @param instances
-	 * @return
+	 * @return new set of closest centroids Instances 
 	 */
 	public Instances quantize(Instances instances) {
-		return null;
+		Instances closestCentroids = new Instances(instances, instances.numInstances());
+		closestCentroids.clear();
+		for (Instance instance : instances) {
+			int closestCentroidIndex = findClosestCentroid(instance);
+			closestCentroids.add(this.centroids.instance(closestCentroidIndex));
+		}
+		return closestCentroids;
 	}
 
 	/**
