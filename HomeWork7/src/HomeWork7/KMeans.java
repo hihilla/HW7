@@ -105,12 +105,12 @@ public class KMeans {
 		
 		Instances cluster = new Instances(instances, instances.size());
 		cluster.clear();
-		double[] sumOfAttributes = new double[cluster.numInstances()];
+		double[] sumOfAttributes = new double[instances.numAttributes()];
 		
 		// adds all instances that belong to the cluster to the cluster itself
 		for (int i = 0; i < instances.numInstances(); i++) {
 			if (indexesOfCentroids[i] == indexOfCentroid){
-				cluster.add(instances.get(i));
+				cluster.add(instances.instance(i));
 			}
 		}
 		
@@ -118,7 +118,7 @@ public class KMeans {
 		// the cluster in order to find the mean value of every attribute (RGB...)
 		for (int i = 0; i < cluster.numInstances(); i++) {
 			for (int j = 0; j < cluster.numAttributes(); j++) {
-				sumOfAttributes[j] += cluster.get(i).value(j);
+				sumOfAttributes[j] += cluster.instance(i).value(j);
 			}
 		}
 		
