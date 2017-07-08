@@ -10,6 +10,7 @@ public class KMeans {
 	int k;
 
 	public KMeans(int k) {
+		this.k = k;
 	}
 
 //	public KMeans(Instances trainingData, Instances centroids, int k) {
