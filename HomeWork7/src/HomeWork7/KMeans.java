@@ -109,10 +109,6 @@ public class KMeans {
 			double diff = Math.abs(prevError - curError);
 			if (diff < epsilon) {
 				epsilonError = true;
-				System.out.println("*********");
-				System.out.println(prevError);
-				System.out.println(curError);
-				System.out.println(diff);
 			}
 			prevError = curError;				
 		}
@@ -169,7 +165,7 @@ public class KMeans {
 			double tempDist = dataSetInstance.value(i) - centroid.value(i);
 			distance += Math.pow(tempDist, 2);
 		}
-		return Math.pow(distance, 0.5);
+		return distance;
 	}
 
 	/**
