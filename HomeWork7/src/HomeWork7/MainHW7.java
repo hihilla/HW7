@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 
 import weka.core.Attribute;
 import weka.core.DenseInstance;
-import weka.core.EuclideanDistance;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -140,17 +139,17 @@ public class MainHW7 {
 		// load the libras.txt data set.
 		Instances librasData = loadData("libras.txt");
 		// For each number of principal components
-		for (int i = 13; i <= 90; i++) {			
-		// create a PrincipalComponents object 
-		PrincipalComponents pca = new PrincipalComponents();
-		// set the number of principal components
-		pca.setNumPrinComponents(i);
-		pca.setTransformBackToOriginal(true);
-		pca.buildEvaluator(librasData);
-		Instances transformedData = pca.transformedData(librasData);
-		double dist = calcAvgDistance(librasData, transformedData);
-		// print this average distance to the console
-		System.out.println(dist);
+		for (int i = 13; i <= 90; i++) {
+			// create a PrincipalComponents object 
+			PrincipalComponents pca = new PrincipalComponents();
+			// set the number of principal components
+			pca.setNumPrinComponents(i);
+			pca.setTransformBackToOriginal(true);
+			pca.buildEvaluator(librasData);
+			Instances transformedData = pca.transformedData(librasData);
+			double dist = calcAvgDistance(librasData, transformedData);
+			// print this average distance to the console
+			System.out.println(dist);
 		}	
 	}
 	
@@ -168,15 +167,26 @@ public class MainHW7 {
 	private static double calcAvgDistance(Instances original, Instances transformed) {
 		double distance = 0;
 		for (Instance orig : original) {
-			for (Instance trans : transformed) {
-				double tempDist = 0;
-				for (int i = 0; i < orig.numAttributes(); i++) {
-					
-				}
-//				distance += new EuclideanDistance().distance(orig, trans);
-			}
+			distance += calcAvgDistance(orig, transformed);
 		}
-		return distance / (double) (original.numInstances() * transformed.numInstances());
+		return distance / (double) original.numInstances();
+	}
+	
+	private static double calcEuclidDistance(Instance first, Instance second) {
+		double distance = 0;
+		for (int i = 0; i < first.numAttributes(); i++) {
+			double tmp = first.value(i) - second.value(i);
+			distance += Math.pow(tmp, 2);
+		}
+		return Math.pow(distance, 0.5);
+	}
+	
+	private static double calcAvgDistance(Instance instance, Instances instances) {
+		double distance = 0;
+		for (Instance other : instances) {
+			distance += calcEuclidDistance(instance, other);
+		}
+		return distance / (double) instances.numInstances();
 	}
 }
 
