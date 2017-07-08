@@ -1,5 +1,8 @@
 package HomeWork7;
 
+import weka.core.Instance;
+import weka.core.Instances;
+
 public class KMeans {
 
 	/**
@@ -39,7 +42,7 @@ public class KMeans {
 	}
 
 	/**
-	 * a. Input: 2 Instance objects – one is an instance from the dataset and
+	 * a. Input: 2 Instance objects ï¿½ one is an instance from the dataset and
 	 * one is a centroid (if you're using different data structure for the
 	 * centroid, feel free to change the input). b. Output: should calculate the
 	 * squared distance between the input instance and the input centroid
@@ -50,7 +53,7 @@ public class KMeans {
 	 */
 	public double calcSquaredDistanceFromCentroid(Instance dataSetInstance, Instance centroid) {
 
-		return null;
+		return 0;
 	}
 
 	/**
@@ -82,6 +85,6 @@ public class KMeans {
 	 * @return
 	 */
 	public double calcAvgWSSSE(Instances instances) {
-		return null;
+		return 0;
 	}
 }
