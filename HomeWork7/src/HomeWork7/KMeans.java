@@ -2,6 +2,7 @@ package HomeWork7;
 
 import java.util.Random;
 
+import weka.clusterers.Clusterer;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -94,12 +95,26 @@ public class KMeans {
 	 */
 	public void findKMeansCentroids(Instances instances) {
 		int numOfIterations = 40;
-		int numOfCentroids = this.k;
+		double epsilon = 0.003;
+		double prevError = calcAvgWSSSE(instances);
+		double curError;
+		boolean epsilonError = false;
 		
-		for (int i = 0; i < numOfIterations; i++) {
+		for (int i = 0; i < numOfIterations && !epsilonError; i++) {
 			for (int j = 0; j < centroids.numInstances(); j++) {
 				updateIthCentroid(instances, findCluster(instances), j);
 			}
+			System.out.println(i);
+			curError = calcAvgWSSSE(instances);
+			double diff = Math.abs(prevError - curError);
+			if (diff < epsilon) {
+				epsilonError = true;
+				System.out.println("*********");
+				System.out.println(prevError);
+				System.out.println(curError);
+				System.out.println(diff);
+			}
+			prevError = curError;				
 		}
 	}
 	
@@ -154,7 +169,7 @@ public class KMeans {
 			double tempDist = dataSetInstance.value(i) - centroid.value(i);
 			distance += Math.pow(tempDist, 2);
 		}
-		return distance;
+		return Math.pow(distance, 0.5);
 	}
 
 	/**
@@ -201,13 +216,20 @@ public class KMeans {
 	 * @return double value of the WSSSE. 
 	 */
 	public double calcAvgWSSSE(Instances instances) {
+		int[] clusters = findCluster(instances);
 		double Tr = 0;
-		for (Instance instance : instances) {
-			int closestCentroidIndex = findClosestCentroid(instance);
-			Instance closestCentroid = this.centroids.instance(closestCentroidIndex);
-			double squaredDistance = calcSquaredDistanceFromCentroid(instance, closestCentroid);
+		for (int i = 0; i < clusters.length; i++) {
+			Instance instance = instances.instance(i);
+			Instance centroid = centroids.instance(clusters[i]);
+			double squaredDistance = calcSquaredDistanceFromCentroid(instance, centroid);
 			Tr += squaredDistance;
 		}
+//		for (Instance instance : instances) {
+//			int closestCentroidIndex = findClosestCentroid(instance);
+//			Instance closestCentroid = this.centroids.instance(closestCentroidIndex);
+//			double squaredDistance = calcSquaredDistanceFromCentroid(instance, closestCentroid);
+//			Tr += squaredDistance;
+//		}
 		
 		return Tr / (double) instances.numInstances();
 	}
