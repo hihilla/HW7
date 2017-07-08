@@ -40,7 +40,7 @@ public class KMeans {
 	public void initializeCentroids(Instances instances) {
 		Instances randomInstances = new Instances(instances);
 		randomInstances.randomize(new Random());
-		this.centroids = new Instances(instances, instances.size());
+		this.centroids = new Instances(instances, this.k);
 		this.centroids.clear();
 
 		for (int i = 0; i < this.k; i++) {
@@ -65,16 +65,17 @@ public class KMeans {
 		// goes through all instances, checks the distances from all centroids
 		// and chooses the closest centroid of each instance.
 		for (int i = 0; i < numOfInstances; i++) {
-			for (int j = 0; j < numOfClusters; j++){
-				double tempDistance = calcSquaredDistanceFromCentroid(instances.get(i),
-						centroids.get(j));
-				if (tempDistance < minDistance){
-					minDistance = tempDistance;
-					indexesOfCentroids[i] = j;
-				}
-			}
-			// before starting a new instance, the distance is maximal
-			minDistance = Double.MAX_VALUE;
+			indexesOfCentroids[i] = findClosestCentroid(instances.instance(i));
+//			for (int j = 0; j < numOfClusters; j++){
+//				double tempDistance = calcSquaredDistanceFromCentroid(instances.get(i),
+//						centroids.get(j));
+//				if (tempDistance < minDistance){
+//					minDistance = tempDistance;
+//					indexesOfCentroids[i] = j;
+//				}
+//			}
+//			// before starting a new instance, the distance is maximal
+//			minDistance = Double.MAX_VALUE;
 		}
 		
 		return indexesOfCentroids;
@@ -93,11 +94,12 @@ public class KMeans {
 	 */
 	public void findKMeansCentroids(Instances instances) {
 		int numOfIterations = 40;
-		int numOfCentroids = centroids.numInstances();
-		double[] lastDistanceCentroids = new double[numOfCentroids];
+		int numOfCentroids = this.k;
 		
 		for (int i = 0; i < numOfIterations; i++) {
-			//needed function
+			for (int j = 0; j < centroids.numInstances(); j++) {
+				updateIthCentroid(instances, findCluster(instances), j);
+			}
 		}
 	}
 	
