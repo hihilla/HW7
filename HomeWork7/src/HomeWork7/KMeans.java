@@ -62,8 +62,11 @@ public class KMeans {
 	 */
 	public double calcSquaredDistanceFromCentroid(Instance dataSetInstance, 
 													Instance centroid) {
-		double distance = new EuclideanDistance().distance(dataSetInstance, 
-															centroid);
+		double distance = 0;
+		for (int i = 0; i < dataSetInstance.numAttributes(); i++) {
+			double tempDist = dataSetInstance.value(i) - centroid.value(i);
+			distance += Math.pow(tempDist, 2);
+		}
 		return distance;
 	}
 
@@ -103,11 +106,22 @@ public class KMeans {
 	}
 
 	/**
-	 * 
+	 * Calculate the average within set sum of squared errors. That is it should 
+	 * calculate the average squared distance of every instance from the centroid 
+	 * to which it is assigned. This is Tr(Sc) from class, divided by the number 
+	 * of instances. 
 	 * @param instances
-	 * @return
+	 * @return double value of the WSSSE. 
 	 */
 	public double calcAvgWSSSE(Instances instances) {
-		return 0;
+		double Tr = 0;
+		for (Instance instance : instances) {
+			int closestCentroidIndex = findClosestCentroid(instance);
+			Instance closestCentroid = this.centroids.instance(closestCentroidIndex);
+			double squaredDistance = calcSquaredDistanceFromCentroid(instance, closestCentroid);
+			Tr += squaredDistance;
+		}
+		
+		return Tr / (double) instances.numInstances();
 	}
 }
