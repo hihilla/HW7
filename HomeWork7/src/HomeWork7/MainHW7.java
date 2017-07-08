@@ -97,7 +97,9 @@ public class MainHW7 {
 	}
 
 	public static void main(String[] args) throws Exception {
-		
+		// open messi.jpg and covert it to an instances object.
+		BufferedImage messiImage = ImageIO.read(new File("messi.jpg"));
+
 
 	}
 }

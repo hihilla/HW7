@@ -4,6 +4,7 @@ import weka.core.Instance;
 import weka.core.Instances;
 
 public class KMeans {
+	Instances centroids;
 
 	/**
 	 * This method is building the KMeans object. It should initialize centroids
@@ -23,7 +24,7 @@ public class KMeans {
 	 * @param instances
 	 */
 	public void initializeCentroids(Instances instances) {
-
+		this.centroids = new Instances(instances);
 	}
 
 	/**
