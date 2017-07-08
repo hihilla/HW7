@@ -126,7 +126,7 @@ public class KMeans {
 		// sets those values to be the new centroids
 		for (int i = 0; i < sumOfAttributes.length; i++) {
 			sumOfAttributes[i] = sumOfAttributes[i] / (double) cluster.numInstances();
-			centroids.get(indexOfCentroid).setValue(i, sumOfAttributes[i]);
+			centroids.instance(indexOfCentroid).setValue(cluster.attribute(i), sumOfAttributes[i]);
 		}
 	}
 
