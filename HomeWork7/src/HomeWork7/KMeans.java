@@ -48,9 +48,9 @@ public class KMeans {
 		}
 	}
 	/**
-	 * the function returns all array size all instances,
-	 * says to which cluster (according to centroids)
-	 * each instance belogs to
+	 * the function returns an array size of all instances,
+	 * indicating for every instances to what
+	 * cluster in belongs to (according to centroids)
 	 * @param instances
 	 * @param indexOFCentroid
 	 * @return
@@ -103,6 +103,13 @@ public class KMeans {
 		}
 	}
 	
+	/**
+	 * with the given centroid, checks all instances in that cluster
+	 * and updates the centroid to be the center of the cluster
+	 * @param instances
+	 * @param indexesOfCentroids
+	 * @param indexOfCentroid
+	 */
 	public void updateIthCentroid(Instances instances, int[] indexesOfCentroids,
 									int indexOfCentroid){
 		
