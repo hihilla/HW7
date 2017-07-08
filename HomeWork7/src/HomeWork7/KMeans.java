@@ -78,16 +78,16 @@ public class KMeans {
 	 * @return
 	 */
 	public int findClosestCentroid(Instance instance) {
-		int closestCentroidIndex;
-		double closestDistance = Double.MAX_VALUE;
-		for (int i = 0; i < this.centroids.numInstances(); i++) {
+		int closestCentroidIndex = 0;
+		double closestDistance = calcSquaredDistanceFromCentroid(instance, this.centroids.instance(0));
+		for (int i = 1; i < this.centroids.numInstances(); i++) {
 			double curDistance = calcSquaredDistanceFromCentroid(instance, this.centroids.instance(i));
 			if (closestDistance > curDistance) {
 				closestDistance = curDistance;
 				closestCentroidIndex = i;
 			}
 		}
-		return i;
+		return closestCentroidIndex;
 	}
 
 	/**
