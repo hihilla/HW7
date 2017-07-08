@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -152,8 +151,7 @@ public class MainHW7 {
 		double dist = calcAvgDistance(librasData, transformedData);
 		// print this average distance to the console
 		System.out.println(dist);
-		}
-		
+		}	
 	}
 	
 	/**
@@ -171,7 +169,11 @@ public class MainHW7 {
 		double distance = 0;
 		for (Instance orig : original) {
 			for (Instance trans : transformed) {
-				distance += new EuclideanDistance().distance(orig, trans);
+				double tempDist = 0;
+				for (int i = 0; i < orig.numAttributes(); i++) {
+					
+				}
+//				distance += new EuclideanDistance().distance(orig, trans);
 			}
 		}
 		return distance / (double) (original.numInstances() * transformed.numInstances());
