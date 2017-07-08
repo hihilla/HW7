@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 
 import weka.core.Attribute;
 import weka.core.DenseInstance;
-import weka.core.EuclideanDistance;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -140,7 +139,7 @@ public class MainHW7 {
 		// load the libras.txt data set.
 		Instances librasData = loadData("libras.txt");
 		// For each number of principal components
-		for (int i = 13; i <= 90; i++) {			
+		for (int i = 13; i <= 90; i++) {
 		// create a PrincipalComponents object 
 		PrincipalComponents pca = new PrincipalComponents();
 		// set the number of principal components
@@ -171,11 +170,13 @@ public class MainHW7 {
 			for (Instance trans : transformed) {
 				double tempDist = 0;
 				for (int i = 0; i < orig.numAttributes(); i++) {
-					
+					double tmp = Math.pow(orig.value(i) - trans.value(i), 2);
+					tempDist += tmp;
 				}
-//				distance += new EuclideanDistance().distance(orig, trans);
+				distance += tempDist;
 			}
 		}
+		distance = Math.pow(distance, 0.5);
 		return distance / (double) (original.numInstances() * transformed.numInstances());
 	}
 }
