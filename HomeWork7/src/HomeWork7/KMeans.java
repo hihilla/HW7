@@ -51,7 +51,8 @@ public class KMeans {
 	 * @param centroid
 	 * @return
 	 */
-	public double calcSquaredDistanceFromCentroid(Instance dataSetInstance, Instance centroid) {
+	public double calcSquaredDistanceFromCentroid(Instance dataSetInstance, 
+												  Instance centroid) {
 
 		return 0;
 	}
