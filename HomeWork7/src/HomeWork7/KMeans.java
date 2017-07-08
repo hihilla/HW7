@@ -26,7 +26,8 @@ public class KMeans {
 	 * @param instances
 	 */
 	public void buildClusterModel(Instances instances) {
-
+		initializeCentroids(instances);
+		findKMeansCentroids(instances);
 	}
 
 	/**
@@ -35,13 +36,13 @@ public class KMeans {
 	 * 
 	 * @param instances
 	 */
-	public void initializeCentroids(Instances instances, int k) {
+	public void initializeCentroids(Instances instances) {
 		Instances randomInstances = new Instances(instances);
 		randomInstances.randomize(new Random());
 		this.centroids = new Instances(instances, instances.size());
 		this.centroids.clear();
 
-		for (int i = 0; i < k; i++) {
+		for (int i = 0; i < this.k; i++) {
 			this.centroids.add(randomInstances.instance(i));
 		}
 	}

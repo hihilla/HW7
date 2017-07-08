@@ -131,5 +131,18 @@ public class MainHW7 {
 			}
 		}
 	}
+	
+	/**
+	 * PCA section
+	 * @throws IOException 
+	 */
+	private static void PCAImpl() throws IOException {
+		// load the libras.txt data set.
+		Instances librasData = loadData("libras.txt");
+		// For each number of principal components
+		// Run PCA on the instances and transform them back to the 
+		// original space using  principal components
+		
+	}
 }
 
