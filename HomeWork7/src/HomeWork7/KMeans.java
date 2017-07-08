@@ -1,5 +1,7 @@
 package HomeWork7;
 
+import java.util.Random;
+
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -23,8 +25,15 @@ public class KMeans {
 	 * 
 	 * @param instances
 	 */
-	public void initializeCentroids(Instances instances) {
-		this.centroids = new Instances(instances);
+	public void initializeCentroids(Instances instances, int k) {
+		Instances randomInstances = new Instances(instances);
+		randomInstances.randomize(new Random());
+		this.centroids = new Instances(instances, instances.size());
+		this.centroids.clear();
+
+		for (int i = 0; i < k; i++) {
+			this.centroids.add(randomInstances.instance(i));
+		}
 	}
 
 	/**
@@ -53,7 +62,7 @@ public class KMeans {
 	 * @return
 	 */
 	public double calcSquaredDistanceFromCentroid(Instance dataSetInstance, 
-												  Instance centroid) {
+			Instance centroid) {
 
 		return 0;
 	}
