@@ -6,7 +6,6 @@ import weka.core.Instance;
 import weka.core.Instances;
 
 public class KMeans {
-	Instances trainingData;
 	Instances centroids;
 	int k;
 
@@ -36,15 +35,46 @@ public class KMeans {
 	 * 
 	 * @param instances
 	 */
-	public void initializeCentroids(Instances instances) {
+	public void initializeCentroids(Instances instances, int k) {
 		Instances randomInstances = new Instances(instances);
 		randomInstances.randomize(new Random());
 		this.centroids = new Instances(instances, instances.size());
 		this.centroids.clear();
 
-		for (int i = 0; i < this.k; i++) {
+		for (int i = 0; i < k; i++) {
 			this.centroids.add(randomInstances.instance(i));
 		}
+	}
+	/**
+	 * the function returns all instances that belong to a given
+	 * centroid's index.
+	 * @param instances
+	 * @param indexOFCentroid
+	 * @return
+	 */
+	public int[] findCluster(Instances instances){
+		
+		int numOfInstances = instances.numInstances();
+		int numOfClusters = centroids.numInstances();
+		int[] indexesOfCentroids = new int[numOfInstances];
+		double minDistance = Double.MAX_VALUE;
+		
+		// goes through all instances, checks the distances from all centroids
+		// and chooses the closest centroid of each instance.
+		for (int i = 0; i < numOfInstances; i++) {
+			for (int j = 0; j < numOfClusters; j++){
+				double tempDistance = calcSquaredDistanceFromCentroid(instances.get(i),
+						centroids.get(j));
+				if (tempDistance < minDistance){
+					minDistance = tempDistance;
+					indexesOfCentroids[i] = j;
+				}
+			}
+			// before starting a new instance, the distance is maximal
+			minDistance = Double.MAX_VALUE;
+		}
+		
+		return indexesOfCentroids;
 	}
 
 	/**
@@ -59,79 +89,70 @@ public class KMeans {
 	 * @param instances
 	 */
 	public void findKMeansCentroids(Instances instances) {
-
-	}
-
-	/**
-	 * Calculate the squared distance between the input instance and the input
-	 * centroid
-	 * 
-	 * @param dataSetInstance - an instance from the dataset 
-	 * @param centroid - a centroid 
-	 * @return distance between 2 instances
-	 */
-	public double calcSquaredDistanceFromCentroid(Instance dataSetInstance, 
-													Instance centroid) {
-		double distance = 0;
-		for (int i = 0; i < dataSetInstance.numAttributes(); i++) {
-			double tempDist = dataSetInstance.value(i) - centroid.value(i);
-			distance += Math.pow(tempDist, 2);
-		}
-		return distance;
-	}
-
-	/**
-	 * Finds the index of the closest centroid to the input instance
-	 * 
-	 * @param instance
-	 * @return index of closest centroid
-	 */
-	public int findClosestCentroid(Instance instance) {
-		int closestCentroidIndex = 0;
-		double closestDistance = calcSquaredDistanceFromCentroid(instance, this.centroids.instance(0));
-		for (int i = 1; i < this.centroids.numInstances(); i++) {
-			double curDistance = calcSquaredDistanceFromCentroid(instance, this.centroids.instance(i));
-			if (closestDistance > curDistance) {
-				closestDistance = curDistance;
-				closestCentroidIndex = i;
-			}
-		}
-		return closestCentroidIndex;
-	}
-
-	/**
-	 * Replace every instance in Instances by the closest centroid
-	 * 
-	 * @param instances
-	 * @return new set of closest centroids Instances 
-	 */
-	public Instances quantize(Instances instances) {
-		Instances closestCentroids = new Instances(instances, instances.numInstances());
-		closestCentroids.clear();
-		for (Instance instance : instances) {
-			int closestCentroidIndex = findClosestCentroid(instance);
-			closestCentroids.add(this.centroids.instance(closestCentroidIndex));
-		}
-		return closestCentroids;
-	}
-
-	/**
-	 * Calculate the average within set sum of squared errors. That is it should 
-	 * calculate the average squared distance of every instance from the centroid 
-	 * to which it is assigned. This is Tr(Sc) from class, divided by the number 
-	 * of instances. 
-	 * @param instances
-	 * @return double value of the WSSSE. 
-	 */
-	public double calcAvgWSSSE(Instances instances) {
-		double Tr = 0;
-		for (Instance instance : instances) {
-			int closestCentroidIndex = findClosestCentroid(instance);
-			Instance closestCentroid = this.centroids.instance(closestCentroidIndex);
-			double squaredDistance = calcSquaredDistanceFromCentroid(instance, closestCentroid);
-			Tr += squaredDistance;
+		int numOfIterations = 40;
+		int numOfCentroids = centroids.numInstances();
+		double[] lastDistanceCentroids = new double[numOfCentroids];
+		
+		
+		// all previous locations of the centroid...
+		for (int i = 0; i < lastDistanceCentroids.length; i++) {
+			lastDistanceCentroids[i] = Double.MAX_VALUE;
 		}
 		
-		return Tr / (double) instances.numInstances();
+		for (int i = 0; i < numOfIterations; i++){
+			if (centroid)
+		}
+	}
+
+	/**
+	 * Input: 2 Instance objects � one is an instance from the dataset and
+	 * one is a centroid (if you're using different data structure for the
+	 * centroid, feel free to change the input). b. Output: should calculate the
+	 * squared distance between the input instance and the input centroid
+	 * 
+	 * @param dataSetInstance
+	 * @param centroid
+	 * @return
+	 */
+	public double calcSquaredDistanceFromCentroid(Instance dataSetInstance, 
+			Instance centroid) {
+
+		return 0;
+	}
+
+	/**
+	 * Input: Instance Output: the index of the closest centroid to the input
+	 * instance
+	 * 
+	 * @param instance
+	 * @return
+	 */
+	public int findClosestCentroid(Instance instance) {
+		return 0;
+	}
+
+	/**
+	 * Output: should replace every instance in Instances by the centroid to
+	 * which it is assigned (closest centroid) and return the new Instances
+	 * object.
+	 * 
+	 * @param instances
+	 * @return
+	 */
+	public Instances quantize(Instances instances) {
+		return null;
+	}
+
+	/**
+	 * 	Output: should be the average within set sum of squared errors. 
+	 * 	That is it should calculate the average squared distance of every 
+	 *  instance from the centroid to which it is assigned. This is Tr(Sc) from class,
+	 *  divided by the number of instances. 
+	 *  Return the double value of the WSSSE. 
+	 * @param instances
+	 * @return
+	 */
+	public double calcAvgWSSSE(Instances instances) {
+		return 0;
 	}
 }
