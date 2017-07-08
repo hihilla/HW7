@@ -6,13 +6,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
 import weka.core.Attribute;
 import weka.core.DenseInstance;
+import weka.core.EuclideanDistance;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -97,10 +97,86 @@ public class MainHW7 {
 	}
 
 	public static void main(String[] args) throws Exception {
+//		kMeansImpl();
+		PCAImpl();
+	}
+
+	/**
+	 * K-means section
+	 * @throws IOException
+	 */
+	private static void kMeansImpl() throws IOException {
 		// open messi.jpg and covert it to an instances object.
 		BufferedImage messiImage = ImageIO.read(new File("messi.jpg"));
-
-
+		int height = messiImage.getHeight();
+		int width = messiImage.getWidth();
+		// convert the image to Instances 
+		Instances messiInstances = convertImgToInstances(messiImage);
+		int[] possibleK = {2,3,5,10,25,50,100,256};
+		for (int k : possibleK) {
+			// run the K-Means algorithm on instances 
+			KMeans kMeans = new KMeans(k);
+			kMeans.buildClusterModel(messiInstances);
+			// quantize 
+			Instances quantInstances = kMeans.quantize(messiInstances);
+			// convert the quantized instances object back to an image
+			BufferedImage outputImage = convertInstancesToImg(quantInstances, width, height);
+			// save the resulting image
+			String fileName = "messi" + k + ".jpg";
+			ImageIO.write(outputImage, "jpg", new File(fileName));
+			// provide a graphical representation of the total error as a 
+			// function of the iteration number
+			if (k == 5) {
+				// WHAT?!?!?!?!
+			}
+		}
+	}
+	
+	/**
+	 * PCA section
+	 * @throws Exception 
+	 */
+	private static void PCAImpl() throws Exception {
+		// load the libras.txt data set.
+		Instances librasData = loadData("libras.txt");
+		// For each number of principal components
+		for (int i = 13; i <= 90; i++) {			
+		// create a PrincipalComponents object 
+		PrincipalComponents pca = new PrincipalComponents();
+		// set the number of principal components
+		pca.setNumPrinComponents(i);
+		pca.setTransformBackToOriginal(true);
+		pca.buildEvaluator(librasData);
+		Instances transformedData = pca.transformedData(librasData);
+		double dist = calcAvgDistance(librasData, transformedData);
+		// print this average distance to the console
+		System.out.println(dist);
+		}	
+	}
+	
+	/**
+	 * Calculates the average Euclidean distance between the original 
+	 * data set and the transformed data set.
+	 * Iterates over all instances in the transformed and original set 
+	 * and for each corresponding pair of instances, it should measure 
+	 * the Euclidean distance between them and then average over the 
+	 * number of instances
+	 * @param original
+	 * @param transformed
+	 * @return The average distance between the instances.
+	 */
+	private static double calcAvgDistance(Instances original, Instances transformed) {
+		double distance = 0;
+		for (Instance orig : original) {
+			for (Instance trans : transformed) {
+				double tempDist = 0;
+				for (int i = 0; i < orig.numAttributes(); i++) {
+					
+				}
+//				distance += new EuclideanDistance().distance(orig, trans);
+			}
+		}
+		return distance / (double) (original.numInstances() * transformed.numInstances());
 	}
 }
 

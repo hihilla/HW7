@@ -7,6 +7,16 @@ import weka.core.Instances;
 
 public class KMeans {
 	Instances centroids;
+	int k;
+
+	public KMeans(int k) {
+	}
+
+//	public KMeans(Instances trainingData, Instances centroids, int k) {
+//		this.k = k;
+//		this.trainingData = trainingData;
+//		this.centroids = centroids;
+//	}
 
 	/**
 	 * This method is building the KMeans object. It should initialize centroids
@@ -16,7 +26,8 @@ public class KMeans {
 	 * @param instances
 	 */
 	public void buildClusterModel(Instances instances) {
-
+		initializeCentroids(instances);
+		findKMeansCentroids(instances);
 	}
 
 	/**
@@ -25,13 +36,13 @@ public class KMeans {
 	 * 
 	 * @param instances
 	 */
-	public void initializeCentroids(Instances instances, int k) {
+	public void initializeCentroids(Instances instances) {
 		Instances randomInstances = new Instances(instances);
 		randomInstances.randomize(new Random());
 		this.centroids = new Instances(instances, instances.size());
 		this.centroids.clear();
 
-		for (int i = 0; i < k; i++) {
+		for (int i = 0; i < this.k; i++) {
 			this.centroids.add(randomInstances.instance(i));
 		}
 	}
@@ -110,60 +121,80 @@ public class KMeans {
 		for (int i = 0; i < cluster.numAttributes(); i++) {
 			int sumOfAllValues = 0;
 			for (int j = 0; j < cluster.numInstances(); j++) {
-				tempCentroid.attribute(j).
+//				tempCentroid.attribute(j).
 			}
 		}
 	}
 
 	/**
-	 * Input: 2 Instance objects � one is an instance from the dataset and
-	 * one is a centroid (if you're using different data structure for the
-	 * centroid, feel free to change the input). b. Output: should calculate the
-	 * squared distance between the input instance and the input centroid
-	 * 
-	 * @param dataSetInstance
-	 * @param centroid
-	 * @return
+	 * Calculate the squared distance between the input instance and the input
+	 * centroid
+	 * @param dataSetInstance - an instance from the dataset 
+	 * @param centroid - a centroid 
+	 * @return distance between 2 instances
 	 */
 	public double calcSquaredDistanceFromCentroid(Instance dataSetInstance, 
-			Instance centroid) {
-
-		return 0;
+													Instance centroid) {
+		double distance = 0;
+		for (int i = 0; i < dataSetInstance.numAttributes(); i++) {
+			double tempDist = dataSetInstance.value(i) - centroid.value(i);
+			distance += Math.pow(tempDist, 2);
+		}
+		return distance;
 	}
 
 	/**
-	 * Input: Instance Output: the index of the closest centroid to the input
-	 * instance
+	 * Finds the index of the closest centroid to the input instance
 	 * 
 	 * @param instance
-	 * @return
+	 * @return index of closest centroid
 	 */
 	public int findClosestCentroid(Instance instance) {
-		return 0;
+		int closestCentroidIndex = 0;
+		double closestDistance = calcSquaredDistanceFromCentroid(instance, this.centroids.instance(0));
+		for (int i = 1; i < this.centroids.numInstances(); i++) {
+			double curDistance = calcSquaredDistanceFromCentroid(instance, this.centroids.instance(i));
+			if (closestDistance > curDistance) {
+				closestDistance = curDistance;
+				closestCentroidIndex = i;
+			}
+		}
+		return closestCentroidIndex;
 	}
 
 	/**
-	 * Output: should replace every instance in Instances by the centroid to
-	 * which it is assigned (closest centroid) and return the new Instances
-	 * object.
+	 * Replace every instance in Instances by the closest centroid
 	 * 
 	 * @param instances
-	 * @return
+	 * @return new set of closest centroids Instances 
 	 */
 	public Instances quantize(Instances instances) {
-		return null;
+		Instances closestCentroids = new Instances(instances, instances.numInstances());
+		closestCentroids.clear();
+		for (Instance instance : instances) {
+			int closestCentroidIndex = findClosestCentroid(instance);
+			closestCentroids.add(this.centroids.instance(closestCentroidIndex));
+		}
+		return closestCentroids;
 	}
 
 	/**
-	 * 	Output: should be the average within set sum of squared errors. 
-	 * 	That is it should calculate the average squared distance of every 
-	 *  instance from the centroid to which it is assigned. This is Tr(Sc) from class,
-	 *  divided by the number of instances. 
-	 *  Return the double value of the WSSSE. 
+	 * Calculate the average within set sum of squared errors. That is it should 
+	 * calculate the average squared distance of every instance from the centroid 
+	 * to which it is assigned. This is Tr(Sc) from class, divided by the number 
+	 * of instances.  
 	 * @param instances
-	 * @return
+	 * @return double value of the WSSSE. 
 	 */
 	public double calcAvgWSSSE(Instances instances) {
-		return 0;
+		double Tr = 0;
+		for (Instance instance : instances) {
+			int closestCentroidIndex = findClosestCentroid(instance);
+			Instance closestCentroid = this.centroids.instance(closestCentroidIndex);
+			double squaredDistance = calcSquaredDistanceFromCentroid(instance, closestCentroid);
+			Tr += squaredDistance;
+		}
+		
+		return Tr / (double) instances.numInstances();
 	}
 }
