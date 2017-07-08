@@ -10,17 +10,14 @@ public class KMeans {
 	Instances centroids;
 	int k;
 
-	public KMeans(Instances trainingData, int k) {
-		this.k = k;
-		this.trainingData = trainingData;
-		this.initializeCentroids(trainingData);
+	public KMeans(int k) {
 	}
 
-	public KMeans(Instances trainingData, Instances centroids, int k) {
-		this.k = k;
-		this.trainingData = trainingData;
-		this.centroids = centroids;
-	}
+//	public KMeans(Instances trainingData, Instances centroids, int k) {
+//		this.k = k;
+//		this.trainingData = trainingData;
+//		this.centroids = centroids;
+//	}
 
 	/**
 	 * This method is building the KMeans object. It should initialize centroids

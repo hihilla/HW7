@@ -99,8 +99,23 @@ public class MainHW7 {
 	public static void main(String[] args) throws Exception {
 		// open messi.jpg and covert it to an instances object.
 		BufferedImage messiImage = ImageIO.read(new File("messi.jpg"));
+		// convert the image to Instances 
+		Instances messiInstances = convertImgToInstances(messiImage);
 
-
+	}
+	
+	private void runKMeansAlg(Instances instances) {
+		int[] possibleK = {2,3,5,10,25,50,100,256};
+		for (int k : possibleK) {
+			// run the K-Means algorithm on instances 
+			KMeans kMeans = new KMeans(k);
+			kMeans.buildClusterModel(instances);
+			// quantize 
+			Instances quantInstances = kMeans.quantize(instances);
+			// convert the quantized instances object back to an image
+			
+		}
+		
 	}
 }
 
