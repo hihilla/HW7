@@ -97,6 +97,15 @@ public class MainHW7 {
 	}
 
 	public static void main(String[] args) throws Exception {
+		kMeansImpl();
+
+	}
+
+	/**
+	 * K-means section
+	 * @throws IOException
+	 */
+	private static void kMeansImpl() throws IOException {
 		// open messi.jpg and covert it to an instances object.
 		BufferedImage messiImage = ImageIO.read(new File("messi.jpg"));
 		int height = messiImage.getHeight();
@@ -115,9 +124,12 @@ public class MainHW7 {
 			// save the resulting image
 			String fileName = "messi" + k + ".jpg";
 			ImageIO.write(outputImage, "jpg", new File(fileName));
-
+			// provide a graphical representation of the total error as a 
+			// function of the iteration number
+			if (k == 5) {
+				// WHAT?!?!?!?!
+			}
 		}
-
 	}
 }
 
