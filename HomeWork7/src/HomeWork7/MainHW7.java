@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 
 import weka.core.Attribute;
 import weka.core.DenseInstance;
+import weka.core.EuclideanDistance;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -143,6 +144,27 @@ public class MainHW7 {
 		// Run PCA on the instances and transform them back to the 
 		// original space using  principal components
 		
+	}
+	
+	/**
+	 * Calculates the average Euclidean distance between the original 
+	 * data set and the transformed data set.
+	 * Iterates over all instances in the transformed and original set 
+	 * and for each corresponding pair of instances, it should measure 
+	 * the Euclidean distance between them and then average over the 
+	 * number of instances
+	 * @param original
+	 * @param transformed
+	 * @return The average distance between the instances.
+	 */
+	private static double calcAvgDistance(Instances original, Instances transformed) {
+		double distance = 0;
+		for (Instance orig : original) {
+			for (Instance trans : transformed) {
+				distance += new EuclideanDistance().distance(orig, trans);
+			}
+		}
+		return distance / (double) (original.numInstances() * transformed.numInstances());
 	}
 }
 
