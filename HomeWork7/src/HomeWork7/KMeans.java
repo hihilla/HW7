@@ -101,28 +101,32 @@ public class KMeans {
 	}
 	
 	public void updateIthCentroid(Instances instances, int[] indexesOfCentroids,
-									int indexOfCentoid){
+									int indexOfCentroid){
 		
 		Instances cluster = new Instances(instances, instances.size());
 		cluster.clear();
-		Instance tempCentroid = centroids.get(indexOfCentoid);
+		double[] sumOfAttributes = new double[cluster.numInstances()];
 		
 		// adds all instances that belong to the cluster to the cluster itself
 		for (int i = 0; i < instances.numInstances(); i++) {
-			if (indexesOfCentroids[i] == indexOfCentoid){
+			if (indexesOfCentroids[i] == indexOfCentroid){
 				cluster.add(instances.get(i));
 			}
 		}
 		
-		// finds the mean value of every attribute (RGB...)
 		// sums all values for each attribute of the instances in 
-		// the cluster, dives by the size of cluster and that is
-		// the value of the attribute of the new centroid
-		for (int i = 0; i < cluster.numAttributes(); i++) {
-			int sumOfAllValues = 0;
-			for (int j = 0; j < cluster.numInstances(); j++) {
-//				tempCentroid.attribute(j).
+		// the cluster in order to find the mean value of every attribute (RGB...)
+		for (int i = 0; i < cluster.numInstances(); i++) {
+			for (int j = 0; j < cluster.numAttributes(); j++) {
+				sumOfAttributes[j] += cluster.get(i).value(j);
 			}
+		}
+		
+		// calculates the mean value of the soon to be centroid
+		// sets those values to be the new centroids
+		for (int i = 0; i < sumOfAttributes.length; i++) {
+			sumOfAttributes[i] = sumOfAttributes[i] / (double) cluster.numInstances();
+			centroids.get(indexOfCentroid).setValue(i, sumOfAttributes[i]);
 		}
 	}
 
