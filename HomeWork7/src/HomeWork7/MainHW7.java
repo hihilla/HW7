@@ -98,8 +98,8 @@ public class MainHW7 {
 	}
 
 	public static void main(String[] args) throws Exception {
-		kMeansImpl();
-
+//		kMeansImpl();
+		PCAImpl();
 	}
 
 	/**
@@ -135,14 +135,24 @@ public class MainHW7 {
 	
 	/**
 	 * PCA section
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	private static void PCAImpl() throws IOException {
+	private static void PCAImpl() throws Exception {
 		// load the libras.txt data set.
 		Instances librasData = loadData("libras.txt");
 		// For each number of principal components
-		// Run PCA on the instances and transform them back to the 
-		// original space using  principal components
+		for (int i = 13; i <= 90; i++) {			
+		// create a PrincipalComponents object 
+		PrincipalComponents pca = new PrincipalComponents();
+		// set the number of principal components
+		pca.setNumPrinComponents(i);
+		pca.setTransformBackToOriginal(true);
+		pca.buildEvaluator(librasData);
+		Instances transformedData = pca.transformedData(librasData);
+		double dist = calcAvgDistance(librasData, transformedData);
+		// print this average distance to the console
+		System.out.println(dist);
+		}
 		
 	}
 	
