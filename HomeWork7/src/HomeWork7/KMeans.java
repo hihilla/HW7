@@ -2,12 +2,25 @@ package HomeWork7;
 
 import java.util.Random;
 
-import weka.core.EuclideanDistance;
 import weka.core.Instance;
 import weka.core.Instances;
 
 public class KMeans {
+	Instances trainingData;
 	Instances centroids;
+	int k;
+
+	public KMeans(Instances trainingData, int k) {
+		this.k = k;
+		this.trainingData = trainingData;
+		this.initializeCentroids(trainingData);
+	}
+
+	public KMeans(Instances trainingData, Instances centroids, int k) {
+		this.k = k;
+		this.trainingData = trainingData;
+		this.centroids = centroids;
+	}
 
 	/**
 	 * This method is building the KMeans object. It should initialize centroids
@@ -26,13 +39,13 @@ public class KMeans {
 	 * 
 	 * @param instances
 	 */
-	public void initializeCentroids(Instances instances, int k) {
+	public void initializeCentroids(Instances instances) {
 		Instances randomInstances = new Instances(instances);
 		randomInstances.randomize(new Random());
 		this.centroids = new Instances(instances, instances.size());
 		this.centroids.clear();
 
-		for (int i = 0; i < k; i++) {
+		for (int i = 0; i < this.k; i++) {
 			this.centroids.add(randomInstances.instance(i));
 		}
 	}
