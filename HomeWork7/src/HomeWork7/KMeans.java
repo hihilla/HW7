@@ -67,6 +67,10 @@ public class KMeans {
 			// calculate the new error and stop if the cost 
 			// function did not change much
 			double newError = calcAvgWSSSE(instances);
+			if (this.k == 5) {
+				System.out.println("iteration: " + i 
+									+ " error: " + newError);
+			}
 			if (Math.abs(prevError - newError) < EPSILON) {
 				costFuncChanged = true;
 			}
@@ -146,7 +150,7 @@ public class KMeans {
 		for (int i = 0; i < dataSetInstance.numAttributes(); i++) {
 			sqDistance += Math.pow((dataSetInstance.value(i) - centroid.value(i)), 2);
 		}
-		return sqDistance;
+		return Math.pow(sqDistance, 0.5);
 	}
 
 	/**
