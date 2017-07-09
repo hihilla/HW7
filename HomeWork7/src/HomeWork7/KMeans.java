@@ -150,7 +150,7 @@ public class KMeans {
 		for (int i = 0; i < dataSetInstance.numAttributes(); i++) {
 			sqDistance += Math.pow((dataSetInstance.value(i) - centroid.value(i)), 2);
 		}
-		return Math.pow(sqDistance, 0.5);
+		return sqDistance;
 	}
 
 	/**
