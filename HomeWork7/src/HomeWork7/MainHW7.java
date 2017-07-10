@@ -125,9 +125,6 @@ public class MainHW7 {
 			ImageIO.write(outputImage, "jpg", new File(fileName));
 			// provide a graphical representation of the total error as a 
 			// function of the iteration number
-			if (k == 5) {
-				// WHAT?!?!?!?!
-			}
 		}
 	}
 	
@@ -166,8 +163,10 @@ public class MainHW7 {
 	 */
 	private static double calcAvgDistance(Instances original, Instances transformed) {
 		double distance = 0;
-		for (Instance orig : original) {
-			distance += calcAvgDistance(orig, transformed);
+		for (int i = 0; i < original.numInstances(); i++) {
+			Instance orig = original.instance(i);
+			Instance trans = transformed.instance(i);
+			distance += calcEuclidDistance(orig, trans);
 		}
 		return distance / (double) original.numInstances();
 	}
@@ -179,14 +178,6 @@ public class MainHW7 {
 			distance += Math.pow(tmp, 2);
 		}
 		return Math.pow(distance, 0.5);
-	}
-	
-	private static double calcAvgDistance(Instance instance, Instances instances) {
-		double distance = 0;
-		for (Instance other : instances) {
-			distance += calcEuclidDistance(instance, other);
-		}
-		return distance / (double) instances.numInstances();
 	}
 }
 
